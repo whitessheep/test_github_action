@@ -1,0 +1,38 @@
+name: 02-Basic-CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 核心动作：把你的代码从仓库里拉下来 (否则目录是空的)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. 准备环境：安装 Python 3.10
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: |
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # 4. 代码风格检查 (Lint) - 格式不对直接报错退出
+      - name: Lint with flake8
+        run: |
+          # 检查语法错误等
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      # 5. 运行测试 (Test) - 逻辑错误直接报错退出
+      - name: Run Unit Tests
+        run: pytest
