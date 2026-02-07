@@ -26,5 +26,5 @@ jobs:
           push: true
           # 自动打两个标签：latest 和具体的版本号(如 v1.0)
           tags: |
-            my-docker-hub/my-game-server:latest
-            my-docker-hub/my-game-server:${{ github.ref_name }}
+            sheepwhite/my-game-server:latest
+            sheepwhite/my-game-server:${{ github.ref_name }}
